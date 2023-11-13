@@ -1,5 +1,7 @@
 package com.example.SpringVersion.global.intercepter;
 
+import com.example.SpringVersion.global.exception.ErrorCode;
+import com.example.SpringVersion.global.exception.RequestException;
 import com.example.SpringVersion.global.jwt.JwtTokenProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
