@@ -1,5 +1,6 @@
 package com.example.SpringVersion.global.jwt;
 
+import com.example.SpringVersion.global.security.UserDetailsServiceImpl;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
