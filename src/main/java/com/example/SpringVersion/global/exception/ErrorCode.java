@@ -21,7 +21,8 @@ public enum ErrorCode {
     // 로그인 관련
     USER_NOT_FOUND_404(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다."),
     PASSWORD_NOT_ACCEPTABLE_406(HttpStatus.NOT_ACCEPTABLE, "비밀번호 형식이 맞지 않습니다."),
-    EMAIL_NOT_ACCEPTABLE_406(HttpStatus.NOT_ACCEPTABLE, "이메일 형식이 맞지 않습니다.");
+    EMAIL_NOT_ACCEPTABLE_406(HttpStatus.NOT_ACCEPTABLE, "이메일 형식이 맞지 않습니다."),
+    INVALID_PASSWORD_401(HttpStatus.NOT_ACCEPTABLE, "비밀번호가 틀립니다.");
 
     private final HttpStatus httpStatus;
     private final String message;
