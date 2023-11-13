@@ -1,21 +1,23 @@
 package com.example.SpringVersion.user.entity;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+
 @Entity
 @Getter
 @Builder
+@Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column
-    private Long userId;
+    @Column(name ="user_id")
+    private Long id;
 
     @Column(nullable = true,unique = true)
     private String email;
@@ -31,8 +33,10 @@ public class User {
 
     @Column(nullable = false)
     private String gender;
+
     @Column(nullable = false)
     private String birthday;
+
     @Column(nullable = false)
     private String phoneNumber;
 

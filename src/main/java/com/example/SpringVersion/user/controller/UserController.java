@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
@@ -17,7 +19,7 @@ public class UserController {
 
     //회원가입
     @PostMapping("/signup")
-    public UserResponseDto signup(@RequestBody UserRequestDto userRequestDto) {
+    public UserResponseDto signup(@RequestBody @Valid UserRequestDto userRequestDto) {
         return userService.register(userRequestDto);
     }
 

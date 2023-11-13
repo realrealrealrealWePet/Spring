@@ -3,15 +3,22 @@ package com.example.SpringVersion.global.intercepter;
 import com.example.SpringVersion.global.exception.ErrorCode;
 import com.example.SpringVersion.global.exception.RequestException;
 import com.example.SpringVersion.global.jwt.JwtTokenProvider;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@Component
 public class JwtTokenInterceptor implements HandlerInterceptor {
     private final JwtTokenProvider jwtTokenProvider;
 
+    // 생성자를 통해 jwtTokenProvider를 주입받도록 수정
+    public JwtTokenInterceptor(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
