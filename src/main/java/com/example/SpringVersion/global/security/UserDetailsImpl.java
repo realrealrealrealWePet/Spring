@@ -1,29 +1,38 @@
 package com.example.SpringVersion.global.security;
+
 import com.example.SpringVersion.user.entity.User;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Collections;
 
+@Getter
 public class UserDetailsImpl implements UserDetails {
     private final User user;
-    public UserDetailsImpl(User user){
+    private final String username;
+
+    public UserDetailsImpl(User user, String username){
         this.user = user;
+        this.username = username;
     }
 
-    public User getUser(){
+    public User getUser() {
         return user;
     }
 
     @Override
-    public String getPassword(){
-        return user.getPassword();
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
     }
 
     @Override
-    public String getUsername(){
-        return user.getName();
+    public String getUsername() {
+        return user.getUsername();
+    }
+    @Override
+    public String getPassword() {
+        return user.getPassword();
     }
 
     @Override
@@ -46,8 +55,4 @@ public class UserDetailsImpl implements UserDetails {
         return true;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();
-    }
 }

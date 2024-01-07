@@ -1,14 +1,12 @@
 package com.example.SpringVersion.global.exception;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class RequestException extends RuntimeException{
-    private final HttpStatus httpStatus;
-
-    public RequestException(ErrorCode errorCode){
-        super(errorCode.getMessage());
-        this.httpStatus = errorCode.getHttpStatus();
-    }
+    private ErrorCode errorCode;
 }

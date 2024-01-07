@@ -24,7 +24,8 @@ logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.type: trace
-
-secret:
-  access: accessaccessaccessaccessaccessaccess
-  refresh: refreshrefreshrefreshrefreshrefresh
+jwt:
+  secret:
+    key:
+      access: accessaccessaccessaccessaccessaccessasaccessaceaccessaccessaccessaccessaccessaccessasaccessace
+      refresh: refreshrefreshrefreshrefreshrefreshefreshrefreshrefreshrefreshrefreshefreshrefreshrefreshrefreshrefresh
