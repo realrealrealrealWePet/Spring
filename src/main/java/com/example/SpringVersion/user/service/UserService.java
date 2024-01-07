@@ -1,11 +1,11 @@
 package com.example.SpringVersion.user.service;
 
-import com.example.SpringVersion.global.exception.ErrorCode;
 import com.example.SpringVersion.global.exception.RequestException;
 import com.example.SpringVersion.global.jwt.JwtTokenProvider;
 import com.example.SpringVersion.global.response.ResponseMessage;
 import com.example.SpringVersion.user.dto.LoginRequestDto;
 import com.example.SpringVersion.user.dto.UserRequestDto;
+import com.example.SpringVersion.user.dto.UserResponseDto;
 import com.example.SpringVersion.user.dto.UserUpdateRequestDto;
 import com.example.SpringVersion.user.entity.User;
 import com.example.SpringVersion.user.repository.UserRepository;
@@ -17,9 +17,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Optional;
 
 import static com.example.SpringVersion.global.exception.ErrorCode.NOT_FOUND_MEMBER;
 import static com.example.SpringVersion.global.exception.ErrorCode.NOT_VALID_PASSWORD;
@@ -88,6 +90,10 @@ public class UserService {
         jwtTokenProvider.validateRefreshToken(request, email);
         issueTokens(response, email);
     }
+
+    public UserResponseDto getProfile(User user) {
+        return new UserResponseDto(user);
+    }
 //    public UserResponseDto userProfile(User user) {
 //        Optional<User> found = userRepository.findByEmail(user.getEmail());
 //        if (found.isEmpty()) {
@@ -112,13 +118,30 @@ public class UserService {
     @Transactional
     public ResponseEntity<ResponseMessage> updateUsername(UserUpdateRequestDto requestDto, User user) {
         //닉네임 업데이트
-        if (userRepository.existsByUsername(requestDto.getUsername())) {
-            throw new RequestException(ErrorCode.DUPLICATED_NICKNAME);
-        }
+//        if (userRepository.existsByUsername(requestDto.getUsername())) {
+//            throw new RequestException(ErrorCode.DUPLICATED_NICKNAME);
+//        } {
+//            userRepository.save(user);
+//        }
+        changeUsername(user, requestDto.getUsername());
         userRepository.save(user);
-
         ResponseMessage responseDto = new ResponseMessage("마이페이지 수정 성공", 200);
         return ResponseEntity.ok(responseDto);
     }
+
+    private void changeUsername(User user, String username) {
+        if(!StringUtils.hasText(username)) return;
+
+        validateUniqueNickname(username);
+    }
+
+    private void validateUniqueNickname(String username) {
+        Optional<User> checkUsername = userRepository.findByUsername(username);
+        if(checkUsername.isPresent()){
+            throw new IllegalArgumentException("중복된 Nickname 입니다.");
+        }
+    }
+
+
 
 }
