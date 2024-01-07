@@ -1,17 +1,13 @@
 package com.example.SpringVersion.user.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.example.SpringVersion.user.dto.UserUpdateRequestDto;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-@Builder
-@Table(name = "users")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,14 +15,14 @@ public class User {
     @Column(name ="user_id")
     private Long id;
 
-    @Column(nullable = true,unique = true)
+    @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)
     private String password;
 
     @Column(nullable = false)
-    private String name;
+    private String username;
 
     @Column(nullable = false, unique=true)
     private String nickname;
@@ -44,14 +40,32 @@ public class User {
 //    @Enumerated(EnumType.STRING)
 //    private MemberRoleEnum role;
 
-    public User(String email, String password, String name, String nickname,String gender, String birthday, String phoneNumber){
+    @Builder
+    public User(String email, String password, String username, String nickname,String gender, String birthday, String phoneNumber){
         this.email = email;
         this.password = password;
-        this.name = name;
+        this.username = username;
         this.nickname = nickname;
         this.gender = gender;
         this.birthday = birthday;
         this.phoneNumber = phoneNumber;
 
+    }
+
+//    public static User of (String email, String password, String username, String nickname,String gender, String birthday, String phoneNumber) {
+//        return User.builder()
+//                .email(email)
+//                .password(password)
+//                .username(username)
+//                .nickname(nickname)
+//                .gender(gender)
+//                .birthday(birthday)
+//                .phoneNumber(phoneNumber)
+//                .build();
+//    }
+    public void updateUsername(UserUpdateRequestDto requestDto) {
+        if (requestDto.getUsername() != null) {
+            this.username = requestDto.getUsername();
+        }
     }
 }
