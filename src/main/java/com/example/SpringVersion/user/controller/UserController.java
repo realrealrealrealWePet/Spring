@@ -45,6 +45,11 @@ public class UserController {
         return new ResponseEntity<>(new ResponseMessage<>("토큰 재발행 성공", null), HttpStatus.ACCEPTED); //(상태 코드 202) 이 응답은 요청이 성공적으로 처리되었으며, 결과가 아직 즉시 사용 가능하지 않음을 나타냅니다. 주로 비동기 작업을 나타낼 때 사용됩니다. 클라이언트는 나중에 상태를 확인하거나 추가적인 작업을 수행할 필요가 있다.
     }
 
+    @GetMapping("/profile")
+    public UserResponseDto getProfile(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return userService.getProfile(userDetails.getUser());
+    }
+
     @PutMapping("/username")
     public ResponseEntity<ResponseMessage> updateUsername(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody UserUpdateRequestDto request){
         return userService.updateUsername(request, userDetails.getUser());
