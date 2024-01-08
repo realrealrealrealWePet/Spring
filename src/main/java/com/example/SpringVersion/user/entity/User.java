@@ -1,6 +1,5 @@
 package com.example.SpringVersion.user.entity;
 
-import com.example.SpringVersion.user.dto.UserUpdateRequestDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -36,12 +35,14 @@ public class User {
     @Column(nullable = false)
     private String phoneNumber;
 
+    private boolean isDeleted;
+
 //    @Column(nullable = false)
 //    @Enumerated(EnumType.STRING)
 //    private MemberRoleEnum role;
 
     @Builder
-    public User(String email, String password, String username, String nickname,String gender, String birthday, String phoneNumber){
+    public User(String email, String password, String username, String nickname,String gender, String birthday, String phoneNumber, boolean isDeleted){
         this.email = email;
         this.password = password;
         this.username = username;
@@ -49,7 +50,7 @@ public class User {
         this.gender = gender;
         this.birthday = birthday;
         this.phoneNumber = phoneNumber;
-
+        this.isDeleted = isDeleted;
     }
 
 //    public static User of (String email, String password, String username, String nickname,String gender, String birthday, String phoneNumber) {
@@ -63,9 +64,13 @@ public class User {
 //                .phoneNumber(phoneNumber)
 //                .build();
 //    }
-    public void updateUsername(UserUpdateRequestDto requestDto) {
-        if (requestDto.getUsername() != null) {
-            this.username = requestDto.getUsername();
-        }
+    public void updateNickname(String nickname){
+        this.nickname = nickname;
+    }
+
+    public void deleteUser() {
+        this.isDeleted = true;
+        this.email = this.email + "(withdrawal)";
+        this.nickname = this.nickname + "(withdrawal)";
     }
 }
