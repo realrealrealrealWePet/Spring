@@ -2,7 +2,9 @@ package com.example.SpringVersion.user.controller;
 
 import com.example.SpringVersion.global.response.ResponseMessage;
 import com.example.SpringVersion.global.security.UserDetailsImpl;
-import com.example.SpringVersion.user.dto.*;
+import com.example.SpringVersion.user.dto.LoginRequestDto;
+import com.example.SpringVersion.user.dto.UserRequestDto;
+import com.example.SpringVersion.user.dto.UserResponseDto;
 import com.example.SpringVersion.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,12 +30,6 @@ public class UserController {
         return new ResponseEntity<>(new ResponseMessage<>("회원가입 성공",null), HttpStatus.CREATED); //(상태 코드 201) 이 응답은 새로운 리소스가 성공적으로 생성되었음을 나타냅니다. 주로 POST 메서드를 통한 리소스 생성 요청에 대한 응답으로 사용
     }
 
-    // 로그인
-//    @PostMapping("/auth/login")
-//    public ResponseEntity<ResponseMessage<UserLoginResponseDto>> login(@RequestBody LoginRequestDto request, HttpServletResponse response){
-//        UserLoginResponseDto userLoginResponseDto = userService.login(request, response);
-//        return new ResponseEntity<>(new ResponseMessage<>("로그인 성공", userLoginResponseDto), HttpStatus.OK);   //(상태 코드 200) 이 응답은 요청이 성공적으로 처리되었음을 나타냅니다. 주로 GET, PUT, PATCH 메서드 등에서 사용
-//    }
     @PostMapping("/auth/login")
     public ResponseEntity<ResponseMessage>login(@RequestBody LoginRequestDto request, HttpServletResponse response){
         return userService.login(request,response);
@@ -50,13 +46,15 @@ public class UserController {
         return userService.getProfile(userDetails.getUser());
     }
 
-    @PutMapping("/username")
-    public ResponseEntity<ResponseMessage> updateUsername(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody UserUpdateRequestDto request){
-        return userService.updateUsername(request, userDetails.getUser());
-//        UserUpdateResponseDto response = userService.updateUsername(userDetails, request);
-//        return new ResponseEntity<>(new ResponseMessage<>("닉네임 변경 성공", response), HttpStatus.ACCEPTED);
-
+    @DeleteMapping("/deleteuser")
+    public ResponseEntity<ResponseMessage> deleteUser(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return userService.deleteUser(userDetails.getUser());
     }
+
+    //    @PutMapping("/nickname")
+//    public UserUpdateResponseDto updateNickname(@AuthenticationPrincipal UserDetailsImpl userDetails,@RequestBody UserUpdateRequestDto userUpdateRequestDto){
+//        return userService.updateNickname(userDetails.getUser(),userUpdateRequestDto);
+//    }
 
 }
 

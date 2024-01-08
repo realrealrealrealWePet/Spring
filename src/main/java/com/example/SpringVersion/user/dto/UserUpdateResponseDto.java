@@ -5,8 +5,8 @@ import lombok.Getter;
 
 @Getter
 public class UserUpdateResponseDto {
-    private String username;
+    private String nickname;
     public UserUpdateResponseDto(User user){
-        this.username = user.getUsername();
+        this.nickname = user.getNickname();
     }
 }

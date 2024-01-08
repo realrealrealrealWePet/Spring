@@ -33,17 +33,17 @@ public class UserValidator {
             throw new RequestException(NOT_VALID_PASSWORD);
         }
     }
-    public void validateUsername(String username){
+    public void validateNickname(String username){
         if(userRepository.existsByUsername(username)){
             throw new RequestException(DUPLICATED_NICKNAME);
         }
     }
 
-    public boolean validateExistUsername(User user){
-        boolean isExistUsername = true;
+    public boolean validateExistNickname(User user){
+        boolean isExistNickname = true;
         if(user.getUsername()==null){
-            isExistUsername = false;
+            isExistNickname = false;
         }
-        return isExistUsername;
+        return isExistNickname;
     }
 }
