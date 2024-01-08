@@ -2,9 +2,7 @@ package com.example.SpringVersion.user.controller;
 
 import com.example.SpringVersion.global.response.ResponseMessage;
 import com.example.SpringVersion.global.security.UserDetailsImpl;
-import com.example.SpringVersion.user.dto.LoginRequestDto;
-import com.example.SpringVersion.user.dto.UserRequestDto;
-import com.example.SpringVersion.user.dto.UserResponseDto;
+import com.example.SpringVersion.user.dto.*;
 import com.example.SpringVersion.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,10 +49,10 @@ public class UserController {
         return userService.deleteUser(userDetails.getUser());
     }
 
-    //    @PutMapping("/nickname")
-//    public UserUpdateResponseDto updateNickname(@AuthenticationPrincipal UserDetailsImpl userDetails,@RequestBody UserUpdateRequestDto userUpdateRequestDto){
-//        return userService.updateNickname(userDetails.getUser(),userUpdateRequestDto);
-//    }
+    @PutMapping("/nickname")
+    public ResponseEntity<ResponseMessage> updateNickname(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody UserUpdateRequestDto userUpdateRequestDto){
+        return userService.updateNickname(userDetails.getUser(),userUpdateRequestDto);
+    }
 
 }
 
