@@ -64,7 +64,7 @@ public class User {
 //                .phoneNumber(phoneNumber)
 //                .build();
 //    }
-    public void updateNickname(String nickname){
+    public void setNickname(String nickname){
         this.nickname = nickname;
     }
 

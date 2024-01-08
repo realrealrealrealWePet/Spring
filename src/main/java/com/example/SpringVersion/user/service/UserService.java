@@ -7,6 +7,7 @@ import com.example.SpringVersion.global.response.ResponseMessage;
 import com.example.SpringVersion.user.dto.LoginRequestDto;
 import com.example.SpringVersion.user.dto.UserRequestDto;
 import com.example.SpringVersion.user.dto.UserResponseDto;
+import com.example.SpringVersion.user.dto.UserUpdateRequestDto;
 import com.example.SpringVersion.user.entity.User;
 import com.example.SpringVersion.user.repository.UserRepository;
 import io.jsonwebtoken.Claims;
@@ -44,16 +45,6 @@ public class UserService {
         userRepository.save(user);
     }
 
-    //    @Transactional
-//    public UserLoginResponseDto login(LoginRequestDto request, HttpServletResponse response) {
-//
-//        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(
-//                () -> new RequestException(NOT_FOUND_MEMBER));
-//        userValidator.validateMatchPassword(request.getPassword(), user.getPassword());
-//        issueTokens(response, user.getEmail());
-//        boolean isExistUsername = userValidator.validateExistUsername(user);
-//        return new UserLoginResponseDto(isExistUsername);
-//    }
     public ResponseEntity<ResponseMessage> login(LoginRequestDto request, HttpServletResponse response) {
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow(
                 () -> new RequestException(NOT_FOUND_MEMBER));
@@ -111,5 +102,12 @@ public class UserService {
         user.deleteUser();
         userRepository.delete(user);
         return ResponseEntity.ok(new ResponseMessage("회원탈퇴", HttpStatus.OK.value()));
+    }
+
+    @Transactional
+    public ResponseEntity<ResponseMessage>updateNickname(User user, UserUpdateRequestDto userUpdateRequestDto){
+        user = userRepository.findById(user.getId()).orElseThrow(() -> new RequestException(ErrorCode.NOT_FOUND_MEMBER));
+        user.setNickname(userUpdateRequestDto.getNickname());
+        return ResponseEntity.ok(new ResponseMessage("닉네임 변경",HttpStatus.OK.value()));
     }
 }
