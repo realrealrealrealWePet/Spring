@@ -1,21 +1,17 @@
 spring:
-  h2:
-    console:
-      enabled: true
-
 
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:testdb
-    username: sa
-    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://database-1.cf4kq2gcocp2.ap-northeast-2.rds.amazonaws.com:3306/WePet
+    username: admin
+    password: wepet1234
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
     properties:
       hibernate:
-        #        show_sql: true
+        show_sql: true
         format_sql: true
   mvc:
     pathmatch:
