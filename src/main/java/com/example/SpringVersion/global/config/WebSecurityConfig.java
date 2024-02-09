@@ -46,6 +46,9 @@ public class WebSecurityConfig {
                 antMatchers("/api/auth/**").permitAll().
                 antMatchers("/api/chat/**").permitAll().
                 antMatchers("/ws/**").permitAll().
+                antMatchers("/templates/chat/**").permitAll().
+                antMatchers("/chat/**").permitAll().
+                antMatchers("/room/**").permitAll().
                 anyRequest().authenticated().
 
                 and().

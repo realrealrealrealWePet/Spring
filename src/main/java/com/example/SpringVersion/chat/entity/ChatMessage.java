@@ -4,13 +4,16 @@ import com.example.SpringVersion.global.timestamp.Timestamped;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Getter
 @Entity
-public class ChatMessage extends Timestamped {
+public class ChatMessage {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,6 +24,9 @@ public class ChatMessage extends Timestamped {
 
     @ManyToOne
     private ChatRoom chatRoom;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
 
     @Builder
     public ChatMessage(String sender, String message, ChatRoom chatRoom) {

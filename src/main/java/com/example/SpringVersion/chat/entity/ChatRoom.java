@@ -31,15 +31,14 @@ public class ChatRoom extends Timestamped {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User receiver;   // 처음 받은 사람 닉네임 저장
 
-    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.REMOVE)
-    private List<ChatMessage> chatMessageList;  // 해당 채팅방에서 기록된 모든 채팅
-
 
     @Builder
-    public ChatRoom(User Sender, User Receiver) {
-        this.sender = Sender;
-        this.receiver = Receiver;
+    public ChatRoom(User sender, User receiver) {
+        this.sender = sender;
+        this.receiver = receiver;
     }
 
-
+    public java.lang.Long getId() {
+        return id;
+    }
 }

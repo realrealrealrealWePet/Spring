@@ -14,22 +14,34 @@ public class ChatMessageRequest {
     public enum MessageType{
         ENTER, TALK
     }
+
+    private ChatMessageRequest.MessageType type; // 메시지 타입
     private String sender;
     private String message;
-    private ChatRoom chatRoom;
+    private ChatRoom chatRoomId;
+
 
     @Builder
-    public ChatMessageRequest(String sender, String message, ChatRoom chatRoom) {
+    public ChatMessageRequest(MessageType type, String sender, String message, ChatRoom chatRoom) {
+        this.type = type;
         this.sender = sender;
         this.message = message;
-        this.chatRoom = chatRoom;
+        this.chatRoomId = chatRoom;
     }
 
     public ChatMessage toEntity() {
         return ChatMessage.builder()
                 .sender(this.sender)
                 .message(this.message)
-                .chatRoom(this.chatRoom)
+                .chatRoom(this.chatRoomId)
                 .build();
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public ChatRoom getChatRoomId() {
+        return chatRoomId;
     }
 }

@@ -1,26 +1,45 @@
 package com.example.SpringVersion.chat.config;
 
 
+import com.example.SpringVersion.chat.handler.StompHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.ChannelRegistration;
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.*;
 
 
 @Configuration
-@EnableWebSocket
+@EnableWebSocketMessageBroker
 @RequiredArgsConstructor
-public class WebSocketConfig implements WebSocketConfigurer {
+public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     // WebSocketHandler 에 관한 생성자 추가
-    private final WebSocketHandler webSocketHandler;
+    private final StompHandler stompHandler;
 
     @Override
-    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        // endpoint 설정 : /ws/chat
-        // 이를 통해서 ws://localhost:8080/ws/chat 으로 요청이 들어오면 websocket 통신을 진행한다.
-        registry.addHandler(webSocketHandler, "/ws/chat").setAllowedOrigins("*");
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint("/chat").setAllowedOriginPatterns("*");
     }
+
+    @Override
+    public void configureMessageBroker(MessageBrokerRegistry registry) {
+        //메시지 구독 요청 (/chat/sub)
+        registry.enableSimpleBroker("/sub");
+
+        //메시지 발행 요청 (/chat/pub)
+        registry.setApplicationDestinationPrefixes("/pub");
+    }
+
+    /*
+
+    @Override
+    public void configureClientInboundChannel(ChannelRegistration registration) {
+        registration.interceptors(stompHandler);
+    }
+
+    */
 
 
 }

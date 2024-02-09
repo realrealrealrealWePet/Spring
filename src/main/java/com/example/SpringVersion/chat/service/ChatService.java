@@ -1,11 +1,23 @@
 package com.example.SpringVersion.chat.service;
 
 
-import com.example.SpringVersion.chat.dto.test.ChatRoomDTO;
+
+import com.example.SpringVersion.chat.dto.ChatMessageRequest;
+import com.example.SpringVersion.chat.dto.ChatRoomRequest;
+import com.example.SpringVersion.chat.dto.ChatRoomResponse;
+import com.example.SpringVersion.chat.entity.ChatMessage;
+import com.example.SpringVersion.chat.entity.ChatRoom;
+import com.example.SpringVersion.chat.repository.ChatMessageRepository;
+import com.example.SpringVersion.chat.repository.ChatRoomRepository;
+import com.example.SpringVersion.user.entity.User;
+import com.example.SpringVersion.user.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -17,41 +29,47 @@ import java.util.*;
 @Data
 @Service
 public class ChatService {
-    private final ObjectMapper mapper;
-    private Map<String, ChatRoomDTO> chatRooms;
 
-    @PostConstruct
-    private void init() {
-        chatRooms = new LinkedHashMap<>();
-    }
+    private final ChatRoomRepository chatRoomRepository;
 
-    public List<ChatRoomDTO> findAllRoom(){
-        return new ArrayList<>(chatRooms.values());
-    }
+    private final ChatMessageRepository chatMessageRepository;
 
-    public ChatRoomDTO findRoomById(String roomId){
-        return chatRooms.get(roomId);
-    }
+    private final UserRepository userRepository;
 
-    public ChatRoomDTO createRoom(String name) {
-        String roomId = UUID.randomUUID().toString(); // 랜덤한 방 아이디 생성
 
-        // Builder 를 이용해서 ChatRoom 을 Building
-        ChatRoomDTO room = ChatRoomDTO.builder()
-                .roomId(roomId)
-                .name(name)
-                .build();
+    @Transactional
+    public ChatRoom createRoom(User user, ChatRoomRequest req){
+        User receiver = userRepository.findByNickname(req.getReceiver()).get();
 
-        chatRooms.put(roomId, room); // 랜덤 아이디와 room 정보를 Map 에 저장
+        ChatRoom room = ChatRoom.builder().sender(user).receiver(receiver).build();
+        chatRoomRepository.save(room);
+
         return room;
     }
 
-    public <T> void sendMessage(WebSocketSession session, T message) {
-        try{
-            session.sendMessage(new TextMessage(mapper.writeValueAsString(message)));
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
+
+    @Transactional
+    public List<ChatRoomResponse.getChatRoomList> getChatRoomLists(List<ChatRoom> rooms, User user){
+        List<ChatRoomResponse.getChatRoomList> getChatRoomLists = new ArrayList<>();
+
+
+        for (ChatRoom room : rooms) {
+            ChatMessage lastMessage = chatMessageRepository.findLastMessageByChatRoomId(room.getId(), PageRequest.of(0, 1))
+                    .getContent().get(0);
+
+            User otherUser = room.getSender().getId().equals(user.getId()) ? room.getReceiver() : room.getSender();
+
+            ChatRoomResponse.getChatRoomList dto = new ChatRoomResponse.getChatRoomList();
+            dto.setRoomId(room.getId());
+            dto.setLastMessage(lastMessage.getMessage());
+            dto.setUpdatedDate(lastMessage.getCreatedAt().toString());
+            dto.setUserName(otherUser.getNickname());
+
+            getChatRoomLists.add(dto);
         }
+
+        return getChatRoomLists;
     }
+
+
 }
-// 출처: https://terianp.tistory.com/142 [Terian의 IT 도전기:티스토리]
