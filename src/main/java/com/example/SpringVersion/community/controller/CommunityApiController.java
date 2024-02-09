@@ -15,7 +15,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-public class CommunityApiController {
+public class  CommunityApiController {
     private final CommunityService communityService;
 
     @PostMapping("/api/posts")

@@ -11,7 +11,6 @@ import javax.validation.constraints.Size;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class UserRequestDto {
     //유효성 검사
     @NotBlank(message ="이메일을 입력해주세요.")
